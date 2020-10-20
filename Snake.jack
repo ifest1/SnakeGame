@@ -1,0 +1,169 @@
+class Snake {
+    // 0 = esquerda, 1 = cima, 2 = direita, 3 = baixo 
+    field int direction, length;
+    field Array snake_x, snake_y;
+
+
+    // adiciona uma nova cabeça e deleta o rabo da cobra (movimentação da cobra)
+    method void nextPos()
+    {   
+        do eraseSnake();
+        do pushSnake();
+        do popSnake();
+        return;
+    }
+
+    constructor Snake new()
+    {
+        var int i;
+       
+        let length = 5;
+        let snake_x = Array.new(100);
+        let snake_y = Array.new(100);
+        let direction = 2;
+        
+        let i = length;
+
+        while(i > -1)
+        {
+            let snake_x[i] = 206+(i*10);
+            let snake_y[i] = 128;
+            let i = i - 1;
+        }
+
+        return this;
+    }
+    // seta a nova direção da cobra baseado na tecla que o player pressionou
+    method void setDirection(int keyPressed)
+    {
+        // esquerda
+        if (keyPressed = 130 & (direction = 1 | direction = 3))
+        {
+            let direction = 0;
+        }
+
+        // cima
+        if (keyPressed = 131 & (direction = 0 | direction = 2))
+        {
+            let direction = 1;
+        }
+
+        // direita
+        if (keyPressed = 132 & (direction = 1 | direction = 3))
+        {
+            let direction = 2;
+        }
+
+        // baixo
+        if (keyPressed = 133 & (direction = 0 | direction = 2))
+        {
+            let direction = 3;
+        }
+        return;
+    }
+
+    // checa se a cabeça da cobra está na borda da tela
+    method boolean checkCollision()
+    {
+        return true;
+    }
+
+    // checa se a cobra não bateu nela mesma
+    method boolean isAlive() 
+    {
+        return true;
+    }
+
+    // desenha a cobra na tela
+    method void drawSnake()
+    {
+        var int i, pos_x, pos_y;
+
+        let i = length;
+        while (i > -1)
+        {
+            let pos_x = snake_x[i];
+            let pos_y = snake_y[i];
+
+            do Screen.setColor(true);
+            do Screen.drawRectangle(pos_x, pos_y, pos_x+8, pos_y+8);
+            let i = i - 1;
+        }
+        return;
+    }
+
+    // apaga a cobra
+    method void eraseSnake()
+    {
+        var int i, pos_x, pos_y;
+
+        let i = length;
+        while (i > -1)
+        {
+            let pos_x = snake_x[i];
+            let pos_y = snake_y[i];
+
+            do Screen.setColor(false);
+            do Screen.drawRectangle(pos_x, pos_y, pos_x+8, pos_y+8);
+            let i = i - 1;
+        }
+        return;
+    }
+
+    method void growSnake()
+    {
+        do pushSnake();
+        let length = length + 1;
+        return;
+    }
+
+    method void pushSnake()
+    {
+        var int i;
+        
+        let i = length + 1;
+        
+        let snake_x[i] = snake_x[i - 1];
+        let snake_y[i] = snake_y[i - 1];
+
+        if (direction = 0)
+        {
+            let snake_x[i] = snake_x[i] - 10;
+        }
+
+        if (direction = 1)
+        {
+            let snake_y[i] = snake_y[i] - 10;
+        }
+
+        if (direction = 2)
+        {
+            let snake_x[i] = snake_x[i] + 10;
+        }
+
+        if (direction = 3)
+        {
+            let snake_y[i] = snake_y[i] + 10;
+        }
+
+        return;
+    }
+
+    method void popSnake()
+    {
+        var int i, j;
+        let i = 0;
+        let j = length + 1;
+        while (i < j)
+        {
+            let snake_x[i] = snake_x[i + 1];
+            let snake_y[i] = snake_y[i + 1];
+
+            let i = i + 1;
+        }
+        let snake_x[j] = 0;
+        let snake_y[j] = 0;
+
+        return;
+    }
+}
