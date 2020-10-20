@@ -1,0 +1,46 @@
+class Game 
+{
+    field int score, delay;
+    field Snake snake;
+
+    constructor Game new(int d)
+    {
+        let snake = Snake.new(5, 2, 512, 256);
+        let delay = d;
+        return this;
+    }
+
+    method void delay()
+    {
+        do Sys.wait(delay);
+        return;
+    }
+
+    method void start()
+    {
+        do snake.drawSnake();
+        do gameLoop();
+        return;
+    }
+
+    method void end()
+    {
+        return;
+    }
+
+    method void gameLoop()
+    {
+        var int key;
+        
+        while (~(key = 140))
+        {
+            let key = Keyboard.keyPressed();
+
+            do snake.setDirection(key);
+            do snake.nextPosition();
+            do delay();
+        }
+        do end();
+        return;
+    }
+}

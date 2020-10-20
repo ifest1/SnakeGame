@@ -1,75 +1,42 @@
-class Snake {
+class Snake 
+{
     // 0 = esquerda, 1 = cima, 2 = direita, 3 = baixo 
     field int direction, length;
-    field Array snake_x, snake_y;
+    field Array snakeX, snakeY;
 
-
-    // adiciona uma nova cabeça e deleta o rabo da cobra (movimentação da cobra)
-    method void nextPos()
-    {   
-        do eraseSnake();
-        do pushSnake();
-        do popSnake();
-        return;
-    }
-
-    constructor Snake new()
+    constructor Snake new(int initialLength, int initialDirection, int maxLengthX, int maxLengthY)
     {
         var int i;
        
-        let length = 5;
-        let snake_x = Array.new(100);
-        let snake_y = Array.new(100);
-        let direction = 2;
+        let length = initialLength;
+        let snakeX = Array.new(maxLengthX);
+        let snakeY = Array.new(maxLengthY);
+        let direction = initialDirection;
         
         let i = length;
 
         while(i > -1)
         {
-            let snake_x[i] = 206+(i*10);
-            let snake_y[i] = 128;
+            let snakeX[i] = 206+(i*10);
+            let snakeY[i] = 128;
             let i = i - 1;
         }
 
         return this;
     }
-    // seta a nova direção da cobra baseado na tecla que o player pressionou
-    method void setDirection(int keyPressed)
-    {
-        // esquerda
-        if (keyPressed = 130 & (direction = 1 | direction = 3))
-        {
-            let direction = 0;
-        }
 
-        // cima
-        if (keyPressed = 131 & (direction = 0 | direction = 2))
-        {
-            let direction = 1;
-        }
-
-        // direita
-        if (keyPressed = 132 & (direction = 1 | direction = 3))
-        {
-            let direction = 2;
-        }
-
-        // baixo
-        if (keyPressed = 133 & (direction = 0 | direction = 2))
-        {
-            let direction = 3;
-        }
+    // adiciona uma nova cabeça e deleta o rabo da cobra (movimentação da cobra)
+    method void nextPosition()
+    {   
+        do eraseSnake();
+        do pushSnake();
+        do popSnake();
+        do drawSnake();
         return;
     }
 
-    // checa se a cabeça da cobra está na borda da tela
-    method boolean checkCollision()
-    {
-        return true;
-    }
-
     // checa se a cobra não bateu nela mesma
-    method boolean isAlive() 
+    method boolean checkCollision() 
     {
         return true;
     }
@@ -77,16 +44,16 @@ class Snake {
     // desenha a cobra na tela
     method void drawSnake()
     {
-        var int i, pos_x, pos_y;
+        var int i, posX, posY;
 
         let i = length;
         while (i > -1)
         {
-            let pos_x = snake_x[i];
-            let pos_y = snake_y[i];
+            let posX = snakeX[i];
+            let posY = snakeY[i];
 
             do Screen.setColor(true);
-            do Screen.drawRectangle(pos_x, pos_y, pos_x+8, pos_y+8);
+            do Screen.drawRectangle(posX, posY, posX+8, posY+8);
             let i = i - 1;
         }
         return;
@@ -95,21 +62,22 @@ class Snake {
     // apaga a cobra
     method void eraseSnake()
     {
-        var int i, pos_x, pos_y;
+        var int i, posX, posY;
 
         let i = length;
         while (i > -1)
         {
-            let pos_x = snake_x[i];
-            let pos_y = snake_y[i];
+            let posX = snakeX[i];
+            let posY = snakeY[i];
 
             do Screen.setColor(false);
-            do Screen.drawRectangle(pos_x, pos_y, pos_x+8, pos_y+8);
+            do Screen.drawRectangle(posX, posY, posX+8, posY+8);
             let i = i - 1;
         }
         return;
     }
 
+    // cresce a cobra
     method void growSnake()
     {
         do pushSnake();
@@ -117,38 +85,133 @@ class Snake {
         return;
     }
 
+    method void isWall()
+    {
+        var int left, right, up, down;
+
+        let left = snakeX[length] - 10;
+        let right = snakeX[length] + 20;
+        let up = snakeY[length] - 10;
+        let down = snakeY[length] + 20;
+        
+        if (right > 512)
+        {
+            let snakeX[length] = 0;
+            return;
+        }
+        
+        if (left < 0)
+        {
+            let snakeX[length] = 502;
+            return;
+        }
+        
+        if (down > 256)
+        {
+            let snakeY[length] = 0;
+            return;
+        }
+        
+        if (up < 0)
+        {
+            let snakeY[length] = 246;
+            return;
+        }
+        return;
+    }
+
+    // cria uma nova cabeça (depende da variável direction)
     method void pushSnake()
     {
         var int i;
+
+        do isWall();
         
         let i = length + 1;
-        
-        let snake_x[i] = snake_x[i - 1];
-        let snake_y[i] = snake_y[i - 1];
+
+        let snakeX[i] = snakeX[i - 1];
+        let snakeY[i] = snakeY[i - 1];
 
         if (direction = 0)
         {
-            let snake_x[i] = snake_x[i] - 10;
+            let snakeX[i] = snakeX[i] - 10;
         }
 
         if (direction = 1)
         {
-            let snake_y[i] = snake_y[i] - 10;
+            let snakeY[i] = snakeY[i] - 10;
         }
 
         if (direction = 2)
         {
-            let snake_x[i] = snake_x[i] + 10;
+            let snakeX[i] = snakeX[i] + 10;
         }
 
         if (direction = 3)
         {
-            let snake_y[i] = snake_y[i] + 10;
+            let snakeY[i] = snakeY[i] + 10;
         }
-
         return;
     }
 
+    // seta a nova direção da cobra baseado na tecla que o player pressionou
+    method void setDirection(int keyPressed)
+    {
+        // esquerda
+        if (keyPressed = 130)
+        {
+            if (direction = 1)
+            {
+                let direction = 0;
+            }
+            if (direction = 3)
+            {
+                let direction = 0;
+            }
+        }
+
+        // cima
+        if (keyPressed = 131)
+        {
+            if (direction = 0)
+            {
+                let direction = 1;
+            }
+            if (direction = 2)
+            {
+                let direction = 1;
+            }
+        }
+
+        // direita
+        if (keyPressed = 132)
+        {
+            if (direction = 1)
+            {
+                let direction = 2;
+            }
+            if (direction = 3)
+            {
+                let direction = 2;
+            }
+        }
+
+        // baixo
+        if (keyPressed = 133)
+        {
+            if (direction = 0)
+            {
+                let direction = 3;
+            }
+            if (direction = 2)
+            {
+                let direction = 3;
+            }
+        }
+        return;
+    }
+
+    // tira o rabo da cobra
     method void popSnake()
     {
         var int i, j;
@@ -156,13 +219,13 @@ class Snake {
         let j = length + 1;
         while (i < j)
         {
-            let snake_x[i] = snake_x[i + 1];
-            let snake_y[i] = snake_y[i + 1];
+            let snakeX[i] = snakeX[i + 1];
+            let snakeY[i] = snakeY[i + 1];
 
             let i = i + 1;
         }
-        let snake_x[j] = 0;
-        let snake_y[j] = 0;
+        let snakeX[j] = 0;
+        let snakeY[j] = 0;
 
         return;
     }

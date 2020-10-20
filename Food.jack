@@ -1,0 +1,30 @@
+class Food
+{
+    field int points;
+
+    constructor Food new(int p)
+    {
+        let points = p;
+        return this;
+    }
+
+    method void putFood()
+    {   
+        return;
+    }
+
+    method void drawFood()
+    {
+        return;
+    }
+
+    method void eraseFood()
+    {
+        return;
+    }
+
+    method int random()
+    {
+        return 0;
+    }
+}

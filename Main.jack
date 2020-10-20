@@ -2,14 +2,9 @@ class Main {
     function void main() 
     {
         var Snake snake;
-        let snake = Snake.new();
-        do snake.drawSnake();
-        do snake.growSnake();
-        do snake.eraseSnake();
-        do snake.drawSnake();
-        do snake.nextPos();
-        do snake.eraseSnake();
-        do snake.drawSnake();
+        var Game snakeGame;
+        let snakeGame = Game.new(100);
+        do snakeGame.start();
         return;
     }
 }
