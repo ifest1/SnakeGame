@@ -1,16 +1,20 @@
 class Snake 
 {
     // 0 = esquerda, 1 = cima, 2 = direita, 3 = baixo 
-    field int direction, length;
+    field int direction, length, maxLengthX, maxLengthY;
     field Array snakeX, snakeY;
 
-    constructor Snake new(int initialLength, int initialDirection, int maxLengthX, int maxLengthY)
+    constructor Snake new(int initialLength, int initialDirection, int maxX, int maxY)
     {
         var int i;
        
         let length = initialLength;
-        let snakeX = Array.new(maxLengthX);
-        let snakeY = Array.new(maxLengthY);
+
+        let maxLengthX = maxX - 10;
+        let maxLengthY = maxY - 10;
+
+        let snakeX = Array.new(maxX);
+        let snakeY = Array.new(maxY);
         let direction = initialDirection;
         
         let i = length;
@@ -84,7 +88,7 @@ class Snake
         
         if (left < 0)
         {
-            let snakeX[length] = 502;
+            let snakeX[length] = maxLengthX;
         }
         
         if (down > 256)
@@ -94,7 +98,7 @@ class Snake
 
         if (up < 0)
         {
-            let snakeY[length] = 246;
+            let snakeY[length] = maxLengthY;
         }
         return;
     }

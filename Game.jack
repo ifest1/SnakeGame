@@ -9,25 +9,7 @@ class Game
         let delay = d;
         return this;
     }
-
-    method void delay()
-    {
-        do Sys.wait(delay);
-        return;
-    }
-
-    method void start()
-    {
-        do snake.drawSnake(true);
-        do gameLoop();
-        return;
-    }
-
-    method void end()
-    {
-        return;
-    }
-
+    
     method void gameLoop()
     {
         var int key;
@@ -43,4 +25,25 @@ class Game
         do end();
         return;
     }
+
+    method void start()
+    {
+        do snake.drawSnake(true);
+        do gameLoop();
+        return;
+    }
+
+    method void end()
+    {
+        return;
+    }
+    
+    method void delay()
+    {
+        do Sys.wait(delay);
+        return;
+    }
+
+    
+
 }
