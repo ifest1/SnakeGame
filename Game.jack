@@ -18,7 +18,7 @@ class Game
 
     method void start()
     {
-        do snake.drawSnake();
+        do snake.drawSnake(true);
         do gameLoop();
         return;
     }

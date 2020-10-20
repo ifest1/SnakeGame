@@ -28,10 +28,10 @@ class Snake
     // adiciona uma nova cabeça e deleta o rabo da cobra (movimentação da cobra)
     method void nextPosition()
     {   
-        do eraseSnake();
+        do drawSnake(false);
         do pushSnake();
         do popSnake();
-        do drawSnake();
+        do drawSnake(true);
         return;
     }
 
@@ -41,8 +41,8 @@ class Snake
         return true;
     }
 
-    // desenha a cobra na tela
-    method void drawSnake()
+    // desenha/apaga a cobra na tela
+    method void drawSnake(boolean flag)
     {
         var int i, posX, posY;
 
@@ -52,30 +52,13 @@ class Snake
             let posX = snakeX[i];
             let posY = snakeY[i];
 
-            do Screen.setColor(true);
+            do Screen.setColor(flag);
             do Screen.drawRectangle(posX, posY, posX+8, posY+8);
             let i = i - 1;
         }
         return;
     }
 
-    // apaga a cobra
-    method void eraseSnake()
-    {
-        var int i, posX, posY;
-
-        let i = length;
-        while (i > -1)
-        {
-            let posX = snakeX[i];
-            let posY = snakeY[i];
-
-            do Screen.setColor(false);
-            do Screen.drawRectangle(posX, posY, posX+8, posY+8);
-            let i = i - 1;
-        }
-        return;
-    }
 
     // cresce a cobra
     method void growSnake()
@@ -97,25 +80,21 @@ class Snake
         if (right > 512)
         {
             let snakeX[length] = 0;
-            return;
         }
         
         if (left < 0)
         {
             let snakeX[length] = 502;
-            return;
         }
         
         if (down > 256)
         {
             let snakeY[length] = 0;
-            return;
         }
-        
+
         if (up < 0)
         {
             let snakeY[length] = 246;
-            return;
         }
         return;
     }
