@@ -32,6 +32,8 @@ class Game
             let key = Keyboard.keyPressed();
 
             do snake.setDirection(key);
+            do updateScore();
+            do food.drawFood(true);
             do snake.nextPosition();
             do setHead();
             
@@ -145,6 +147,16 @@ class Game
         return false;
     }
 
+
+    // atualiza o score
+    method void updateScore()
+    {
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        do Output.printString("Score: ");
+        do Output.printInt(score);
+        return;
+    }
 
     // atualiza a variável do jogo da cabeça da cobra (posição)
     method void setHead()
