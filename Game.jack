@@ -2,6 +2,7 @@ class Game
 {
     field int score; 
     field int delay;
+
     field int headX, headY; 
     field int foodX, foodY;
     
@@ -11,14 +12,17 @@ class Game
     constructor Game new(int d)
     {
         let snake = Snake.new(5, 2, 512, 256);
-        let food = Food.new(1);
+        let food = Food.new(1, 34, 35);
         let score = 0;
         let delay = d;
+
         do setHead();
         do setFood();
+
         return this;
     }
     
+    // aqui de fato o jogo acontece
     method void gameLoop()
     {
         var int key;
@@ -30,19 +34,29 @@ class Game
             do snake.setDirection(key);
             do snake.nextPosition();
             do setHead();
+            
+            if (collidedWithItself())
+            {
+                do end();
+            }
+
             if (collidedWithFood())
             {
                 do food.drawFood(false);
                 do snake.growSnake();
                 let score = score + food.getPoints();
-                // gerar comida randomicamente e desenhá-la na tela
+                do food.setFood();
             }
+
             do delay();
+
         }
+
         do end();
         return;
     }
 
+    // inicializa o jogo
     method void start()
     {
         do snake.drawSnake(true);
@@ -50,23 +64,63 @@ class Game
         return;
     }
 
+
+    // finaliza o jogo
     method void end()
     {
+        do Sys.halt();
         return;
     }
 
+    // delay do jogo
     method void delay()
     {
         do Sys.wait(delay);
         return;
     }
 
+    // checa a colisão entre a cabeça da cobra e a comida
     method boolean collidedWithFood()
     {
         var boolean r;
+        
         let r = detectedCollision(headX, headY, 8, foodX, foodY, 8);
+        
         return r;
+
     }
+
+    // checa colisão da cobra com ela mesma
+    method boolean collidedWithItself()
+    {
+        var boolean r;
+        var int i, j;
+        var int x, y;
+        var Array snakeX, snakeY;
+
+        let i = 0;
+        let j = snake.getLength();
+
+        let snakeX = snake.getSnakeX();
+        let snakeY = snake.getSnakeY();
+
+        while (i < j)
+        {
+            let x = snakeX[i];
+            let y = snakeY[i];
+            let r = detectedCollision(headX, headY, 8, x, y, 8);
+            
+            if (r)
+            {
+                return true;
+            }
+
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    // checa a colisão entre dois retângulos
     method boolean detectedCollision(int firstRectX, int firstRectY, int firstRectWidth, int secondRectX, int secondRectY, int secondRectWidth)
     {
         var int t;
@@ -91,6 +145,8 @@ class Game
         return false;
     }
 
+
+    // atualiza a variável do jogo da cabeça da cobra (posição)
     method void setHead()
     {
         let headX = snake.getHeadX();
@@ -98,6 +154,7 @@ class Game
         return;
     }
 
+    // atualiza a variável do jogo da comida (posição)
     method void setFood()
     {
         let foodX = food.getFoodX();

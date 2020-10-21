@@ -5,9 +5,7 @@ class Snake
     field Array snakeX, snakeY;
 
     constructor Snake new(int initialLength, int initialDirection, int maxX, int maxY)
-    {
-        var int i;
-       
+    {  
         let length = initialLength;
 
         let maxLengthX = maxX - 8;
@@ -16,17 +14,27 @@ class Snake
         let snakeX = Array.new(maxX);
         let snakeY = Array.new(maxY);
         let direction = initialDirection;
-        
-        let i = length;
 
-        while(i > -1)
+        do buildSnake();
+        
+        return this;
+    }
+
+    // cria a cobra com o tamanho especificado 
+    method void buildSnake()
+    {
+        var int i;
+
+        let i = length;
+        
+        while(i > 0)
         {
             let snakeX[i] = 206+(i*8);
             let snakeY[i] = 128;
             let i = i - 1;
         }
 
-        return this;
+        return;
     }
 
     // adiciona uma nova cabeça e deleta o rabo da cobra (movimentação da cobra)
@@ -39,11 +47,6 @@ class Snake
         return;
     }
 
-    // checa se a cobra não bateu nela mesma
-    method boolean checkCollision() 
-    {
-        return true;
-    }
 
     // desenha/apaga a cobra na tela
     method void drawSnake(boolean flag)
@@ -82,6 +85,7 @@ class Snake
         let snakeX[i] = snakeX[i - 1];
         let snakeY[i] = snakeY[i - 1];
 
+        // esquerda
         if (direction = 0)
         {
             let t = snakeX[i] - 8;
@@ -99,6 +103,7 @@ class Snake
             }
         }
 
+        // cima
         if (direction = 1)
         {
             let t = snakeY[i] - 8;
@@ -117,6 +122,7 @@ class Snake
             
         }
 
+        // direita
         if (direction = 2)
         {
             let t = snakeX[i] + 8;
@@ -134,7 +140,8 @@ class Snake
             }
             
         }
-
+        
+        // baixo
         if (direction = 3)
         {
             let t = snakeY[i] + 8;
@@ -230,14 +237,34 @@ class Snake
         return;
     }
 
+    // retorna o x da cabeça da cobra
     method int getHeadX()
     {
         return snakeX[length];
     }
 
+    // retorna o y da cabeça da cobra
     method int getHeadY()
     {
         return snakeY[length];
     }
-    
+
+    // retorna o tamanho atual da cobra
+    method int getLength()
+    {
+        return length;
+    }
+
+    // retorna todas as posições x da cobra
+    method Array getSnakeX()
+    {
+        return snakeX;
+    }
+
+    // retorna todas as posições y da cobra
+    method Array getSnakeY()
+    {
+        return snakeY;
+    }
+
 }

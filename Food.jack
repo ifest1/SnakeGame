@@ -1,40 +1,58 @@
 class Food
 {
-    field int x, y, points;
+    field int x, y; 
+    field int points;
+    field int seedX, seedY;
 
-    constructor Food new(int p)
+    constructor Food new(int p, int sX, int sY)
     {
         let points = p;
-        let x = random();
-        let y = random();
+        let seedX = sX;
+        let seedY = sY;
+        do setFood();
         do drawFood(true);
+        
         return this;
     }
 
+    // retorna o x da comida
     method int getFoodX()
     {
         return x;
     }
 
+
+    // retorna o y da comida 
     method int getFoodY()
     {
         return y;
     }
 
+    // retorna quantos pontos a comida vale
     method int getPoints()
     {
         return points;
     }
 
+    // seta as sementes para o calculo da nova posição da comida
+    method void setSeed(int sX, int sY)
+    {
+        let seedX = sX;
+        let seedY = sY;
+        return;
+    }
+
+    // apaga a antiga comida e seta a posição de uma nova
     method void setFood()
     {   
         do drawFood(false);
-        let x = random();
-        let y = random();
+        let x = getPosition();
+        let y = getPosition();
         do drawFood(true);
         return;
     }
 
+    // desenha/apaga a comida da tela
     method void drawFood(boolean flag)
     {
         do Screen.setColor(flag);
@@ -42,7 +60,9 @@ class Food
         return;
     }
 
-    method int random()
+
+    // calcula a nova posição da comida
+    method int getPosition()
     {
         return 45;
     }
