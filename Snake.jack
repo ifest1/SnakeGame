@@ -10,8 +10,8 @@ class Snake
        
         let length = initialLength;
 
-        let maxLengthX = maxX - 10;
-        let maxLengthY = maxY - 10;
+        let maxLengthX = maxX - 8;
+        let maxLengthY = maxY - 8;
 
         let snakeX = Array.new(maxX);
         let snakeY = Array.new(maxY);
@@ -21,7 +21,7 @@ class Snake
 
         while(i > -1)
         {
-            let snakeX[i] = 206+(i*10);
+            let snakeX[i] = 206+(i*8);
             let snakeY[i] = 128;
             let i = i - 1;
         }
@@ -72,44 +72,11 @@ class Snake
         return;
     }
 
-    method void isWall()
-    {
-        var int left, right, up, down;
-
-        let left = snakeX[length] - 10;
-        let right = snakeX[length] + 20;
-        let up = snakeY[length] - 10;
-        let down = snakeY[length] + 20;
-        
-        if (right > 512)
-        {
-            let snakeX[length] = 0;
-        }
-        
-        if (left < 0)
-        {
-            let snakeX[length] = maxLengthX;
-        }
-        
-        if (down > 256)
-        {
-            let snakeY[length] = 0;
-        }
-
-        if (up < 0)
-        {
-            let snakeY[length] = maxLengthY;
-        }
-        return;
-    }
-
     // cria uma nova cabeça (depende da variável direction)
     method void pushSnake()
     {
-        var int i;
+        var int i, t;
 
-        do isWall();
-        
         let i = length + 1;
 
         let snakeX[i] = snakeX[i - 1];
@@ -117,22 +84,72 @@ class Snake
 
         if (direction = 0)
         {
-            let snakeX[i] = snakeX[i] - 10;
+            let t = snakeX[i] - 8;
+            if (t = 0) 
+            {
+                let snakeX[i] = maxLengthX;
+            }
+            if (t < 0)
+            {
+                let snakeX[i] = maxLengthX;
+            }
+            else 
+            {
+                let snakeX[i] = snakeX[i] - 8;
+            }
         }
 
         if (direction = 1)
         {
-            let snakeY[i] = snakeY[i] - 10;
+            let t = snakeY[i] - 8;
+            if (t = 0)
+            {
+                let snakeY[i] = maxLengthY;
+            }
+            if (t < 0)
+            {
+                let snakeY[i] = maxLengthY;
+            }
+            else 
+            {
+                let snakeY[i] = snakeY[i] - 8;
+            }
+            
         }
 
         if (direction = 2)
         {
-            let snakeX[i] = snakeX[i] + 10;
+            let t = snakeX[i] + 8;
+            if (t = maxLengthX)
+            {
+                let snakeX[i] = 0;
+            }
+            if (t > maxLengthX)
+            {
+                let snakeX[i] = 0;
+            }
+            else
+            {
+                let snakeX[i] = snakeX[i] + 8;
+            }
+            
         }
 
         if (direction = 3)
         {
-            let snakeY[i] = snakeY[i] + 10;
+            let t = snakeY[i] + 8;
+            if (t = maxLengthY)
+            {
+                let snakeY[i] = 0;
+            }
+            if (t > maxLengthY)
+            {
+                let snakeY[i] = 0;
+            }
+            else
+            {
+                let snakeY[i] = snakeY[i] + 8;
+            }
         }
         return;
     }
@@ -212,4 +229,15 @@ class Snake
 
         return;
     }
+
+    method int getHeadX()
+    {
+        return snakeX[length];
+    }
+
+    method int getHeadY()
+    {
+        return snakeY[length];
+    }
+    
 }

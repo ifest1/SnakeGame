@@ -1,12 +1,21 @@
 class Game 
 {
-    field int score, delay;
+    field int score; 
+    field int delay;
+    field int headX, headY; 
+    field int foodX, foodY;
+    
     field Snake snake;
+    field Food food;
 
     constructor Game new(int d)
     {
         let snake = Snake.new(5, 2, 512, 256);
+        let food = Food.new(1);
+        let score = 0;
         let delay = d;
+        do setHead();
+        do setFood();
         return this;
     }
     
@@ -20,6 +29,14 @@ class Game
 
             do snake.setDirection(key);
             do snake.nextPosition();
+            do setHead();
+            if (collidedWithFood())
+            {
+                do food.drawFood(false);
+                do snake.growSnake();
+                let score = score + food.getPoints();
+                // gerar comida randomicamente e desenhá-la na tela
+            }
             do delay();
         }
         do end();
@@ -37,13 +54,54 @@ class Game
     {
         return;
     }
-    
+
     method void delay()
     {
         do Sys.wait(delay);
         return;
     }
 
-    
+    method boolean collidedWithFood()
+    {
+        var boolean r;
+        let r = detectedCollision(headX, headY, 8, foodX, foodY, 8);
+        return r;
+    }
+    method boolean detectedCollision(int firstRectX, int firstRectY, int firstRectWidth, int secondRectX, int secondRectY, int secondRectWidth)
+    {
+        var int t;
+        
+        let t = secondRectX + secondRectWidth;
+        if (firstRectX < t)
+        {
+            let t = firstRectX + firstRectWidth;
+            if (secondRectX < t)
+            {
+                let t = secondRectY + secondRectWidth;
+                if (firstRectY < t)
+                {
+                    let t = firstRectY + firstRectWidth;
+                    if (secondRectY < t)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
+    method void setHead()
+    {
+        let headX = snake.getHeadX();
+        let headY = snake.getHeadY();
+        return;
+    }
+
+    method void setFood()
+    {
+        let foodX = food.getFoodX();
+        let foodY = food.getFoodY();
+        return;
+    }
 }

@@ -1,30 +1,49 @@
 class Food
 {
-    field int points;
+    field int x, y, points;
 
     constructor Food new(int p)
     {
         let points = p;
+        let x = random();
+        let y = random();
+        do drawFood(true);
         return this;
     }
 
-    method void putFood()
+    method int getFoodX()
+    {
+        return x;
+    }
+
+    method int getFoodY()
+    {
+        return y;
+    }
+
+    method int getPoints()
+    {
+        return points;
+    }
+
+    method void setFood()
     {   
+        do drawFood(false);
+        let x = random();
+        let y = random();
+        do drawFood(true);
         return;
     }
 
-    method void drawFood()
+    method void drawFood(boolean flag)
     {
-        return;
-    }
-
-    method void eraseFood()
-    {
+        do Screen.setColor(flag);
+        do Screen.drawRectangle(x, y, x+8, y+8);
         return;
     }
 
     method int random()
     {
-        return 0;
+        return 45;
     }
 }
