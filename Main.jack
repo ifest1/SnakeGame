@@ -3,7 +3,7 @@ class Main {
     {
         var Snake snake;
         var Game snakeGame;
-        let snakeGame = Game.new(100);
+        let snakeGame = Game.new(50, 512, 256);
         do snakeGame.start();
         return;
     }

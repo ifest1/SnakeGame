@@ -29,7 +29,7 @@ class Snake
         
         while(i > 0)
         {
-            let snakeX[i] = 206+(i*8);
+            let snakeX[i] = 256+(i*8);
             let snakeY[i] = 128;
             let i = i - 1;
         }
